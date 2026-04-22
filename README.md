@@ -1,16 +1,17 @@
 # archaeological-drawing
 
-A reusable AI skill for turning artifact photos, descriptions, or rough drafts into rigorous archaeological drawing workflows, generation prompts, execution guidance, and review standards.
+A reusable AI skill for turning artifact photos, descriptions, or rough drafts into rigorous cultural relic drawing workflows, generation prompts, execution guidance, and review standards.
 
-The skill is designed around orthographic projection, evidence-bounded reconstruction, and archaeological publication conventions rather than generic "line art" styling.
+The skill is designed around orthographic projection, evidence-bounded reconstruction, and cultural relic drawing conventions for archaeological publication rather than generic "line art" styling.
 
 ## What It Does
 
-- Converts artifact photos into archaeological drawing plans and prompts
+- Converts artifact photos into cultural relic drawing plans and prompts
 - Enforces evidence limits to avoid invented sections, thickness, or fake scale bars
 - Guides view selection for vessels, stone tools, openwork ornaments, and sculptural artifacts
 - Provides drawing standards for contour, line weight, dot rendering, and hidden/reconstructed features
 - Supports review and correction passes after image generation
+- Defaults to a single white-background PNG or a composed plate when multiple views are provided
 
 ## Repository Layout
 
@@ -47,7 +48,7 @@ Claude Code mainly relies on `SKILL.md` and the frontmatter description. `agents
 ## Example Invocation
 
 ```text
-Use $archaeological-drawing to convert this artifact photo into a rigorous archaeological drawing. Only draw what the evidence supports. Do not invent sections, thickness, hidden structure, or a scale bar.
+Use $archaeological-drawing to convert this artifact photo into a rigorous cultural relic drawing. Only draw what the evidence supports. Do not invent sections, thickness, hidden structure, or a scale bar.
 ```
 
 ## Notes

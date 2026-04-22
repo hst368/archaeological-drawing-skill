@@ -1,9 +1,9 @@
 ---
 name: archaeological-drawing
-description: "将器物照片、器物描述或已有草图转成符合考古报告规范的器物绘图工作流、生成提示词、出图执行和审图标准。Use when Codex needs to create, edit, critique, prompt, or generate archaeological artifact drawings, orthographic line drawings, report plates, vessel profiles, half-section views, stone tool multi-view drawings, openwork ornament drawings, or black-and-white technical illustrations from photos or descriptions. Triggers include: 考古绘图、器物线图、器物剖面图、半剖面、正投影、文物绘图、器物照片转绘图、archaeological drawing, artifact illustration, orthographic artifact drawing, pottery profile drawing."
+description: "将器物照片、器物描述或已有草图转成符合考古报告规范的文物绘图工作流、生成提示词、出图执行和审图标准。Use when Codex needs to create, edit, critique, prompt, or generate cultural relic drawings, artifact report plates, orthographic line drawings, vessel profiles, half-section views, stone tool multi-view drawings, openwork ornament drawings, or black-and-white technical illustrations from photos or descriptions. Triggers include: 文物绘图、考古绘图、器物线图、器物剖面图、半剖面、正投影、文物照片转绘图、器物照片转绘图、cultural relic drawing, archaeological drawing, artifact illustration, orthographic artifact drawing, pottery profile drawing."
 ---
 
-# Archaeological Drawing
+# Cultural Relic Drawing
 
 Convert artifact photos, descriptions, or existing drafts into archaeological drawings that prioritize scientific record over visual drama.
 
@@ -42,13 +42,18 @@ Default to the highest-fidelity output the evidence supports. If the source is i
    - State the non-negotiable scientific constraints first.
    - State the artifact type, view system, and orientation second.
    - State the line, point, and shading logic third.
-   - State layout, scale-bar handling, and any required labels last.
+   - State layout, delivery shape, scale-bar handling, and any required labels last.
+   - Inject output conventions into the prompt itself: white background unless the user requests another plate ground, centered artifact, clean margins, legible line hierarchy at publication scale, and restrained labels.
+   - Specify solid lines for visible structure, dashed lines only for hidden or reconstructed structure, and section fill or hatching only when a real section is justified.
+   - If the user asks for a plate or provides multiple views or artifacts, specify a grid or aligned plate layout with consistent baselines and truthful scale handling.
    - Ban perspective, color, studio lighting, glossy reflections, speculative restoration, and decorative embellishment explicitly.
 
 5. Review the result against the source before accepting it.
-   - Do a fast first-pass check on contour, major structure, damage, and unwanted stylization.
+   - Check the overall contour and silhouette first. If the outer shape drifts, reject early.
+   - Check the major structure next: view choice, voids, openwork, appendages, sections, and aligned baselines.
+   - Check observed damage, wear, asymmetry, and missing areas next. If the result looks cleaner or more complete than the source, revise toward the source.
+   - Check line logic last: hierarchy, convex-versus-concave treatment, dashed-line meaning, and whether the drawing still reads as technical rather than decorative.
    - Then review the image against the acceptance checklist in [references/standards.md](references/standards.md).
-   - If the drawing becomes smoother, more symmetric, more complete, or more ornate than the source, revise toward the source.
 
 ## Non-Negotiable Rules
 
@@ -102,14 +107,13 @@ After the prompt is ready, execute generation instead of stopping at prompt-writ
 
 For Codex/OpenAI environments, UI metadata may exist in `agents/openai.yaml`. Claude Code does not need that file to trigger the skill; it relies on `SKILL.md` and the frontmatter description.
 
-## Output Conventions
+## Deliverables
 
-- Use white background unless the user explicitly asks for a plate layout on another ground.
-- Center the artifact and leave clean margins.
-- Keep line hierarchy legible at publication scale.
-- Use solid lines for visible structure and dashed lines for hidden or reconstructed structure.
-- Fill or hatch cut surfaces only when a real section is justified.
-- If labels, numbering, or scale bars are requested, keep them restrained and publication-oriented.
+- Default to a single PNG on a white background unless the user explicitly asks for another format or plate style.
+- If the user provides multiple views of one artifact, default to one composed plate with aligned views rather than unrelated separate outputs.
+- If the user provides multiple artifacts or explicitly asks for a `plate`, compose as a grid with consistent margins, aligned baselines where appropriate, and truthful scale cues only when measurements are known.
+- If the user requests separate exports, keep the main composed plate plus individual views only when that split clearly helps publication or review.
+- Keep labels, numbering, and scale bars restrained and publication-oriented. Omit numeric scale when dimensions are unknown.
 
 ## Failure Modes
 
