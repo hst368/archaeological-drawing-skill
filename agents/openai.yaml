@@ -1,0 +1,4 @@
+interface:
+  display_name: "考古绘图"
+  short_description: "将器物照片、描述或草图转成符合考古报告规范的绘图工作流"
+  default_prompt: "Use $archaeological-drawing to convert this artifact photo or description into a rigorous archaeological drawing prompt and review workflow."
