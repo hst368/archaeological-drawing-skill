@@ -61,10 +61,18 @@ The current version is best understood as an evidence-constrained workflow skill
 
 ```text
 archaeological-drawing/
+├── VERSION
+├── CHANGELOG.md
 ├── SKILL.md
 ├── README.md
+├── LICENSE
+├── .gitignore
 ├── agents/
 │   └── openai.yaml
+├── examples/
+│   ├── openwork-plaque.md
+│   ├── stone-tool.md
+│   └── vessel-profile.md
 └── references/
     ├── prompt-templates.md
     └── standards.md
@@ -112,6 +120,14 @@ The default practical target for most photo-based work is `Tier 2`.
   - archaeological drawing standards and acceptance checklist
 - [references/prompt-templates.md](./references/prompt-templates.md)
   - composable prompt blocks and pass-specific templates
+- [examples/](./examples)
+  - ready-to-use invocation patterns for vessel profiles, stone tools, and openwork ornaments
+
+## Version
+
+Current version: `1.0.0`
+
+Version history is recorded in [CHANGELOG.md](./CHANGELOG.md).
 
 ## Install
 
@@ -132,6 +148,12 @@ Copy or symlink this folder into:
 ```
 
 Claude Code mainly relies on `SKILL.md` and the frontmatter description. `agents/openai.yaml` is included for Codex/OpenAI-side UI metadata.
+
+## Compatibility
+
+- Codex/OpenAI environments may use `agents/openai.yaml` for display name, default prompt, and invocation metadata.
+- Claude Code does not require `agents/openai.yaml`; the skill remains usable through `SKILL.md` and its YAML frontmatter.
+- If no image-generation or image-editing backend is available, use the skill to produce a prompt package, view plan, and review checklist instead of claiming that a drawing was generated.
 
 ## Example Invocation
 

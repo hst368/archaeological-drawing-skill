@@ -259,6 +259,12 @@ When the first pass is weak:
 
 Read [references/prompt-templates.md](references/prompt-templates.md) when you need ready-made prompts for vessels, stone tools, openwork ornaments, or review passes.
 
+Read the matching example only when a task fits it closely:
+
+- [examples/vessel-profile.md](examples/vessel-profile.md) for vessel profiles or half-section requests.
+- [examples/stone-tool.md](examples/stone-tool.md) for stone tool multi-view drawings.
+- [examples/openwork-plaque.md](examples/openwork-plaque.md) for openwork plaques, fittings, pendants, and flat ornaments.
+
 ## Execution
 
 After the prompt is ready, choose an execution path that matches the output tier.

@@ -1,4 +1,6 @@
 interface:
   display_name: "文物绘图"
-  short_description: "将器物照片、描述或草图转成符合考古报告规范的文物绘图工作流"
-  default_prompt: "Use $archaeological-drawing to convert this artifact photo or description into a rigorous cultural relic drawing prompt and review workflow."
+  short_description: "证据约束的考古绘图工作流"
+  default_prompt: "Use $archaeological-drawing to turn this artifact photo or description into an evidence-bounded archaeological drawing plan, prompt package, and risk-reviewed draft workflow."
+policy:
+  allow_implicit_invocation: true
