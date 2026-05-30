@@ -12,6 +12,9 @@
 8. Stone tool
 9. Openwork plaque or fitting
 10. Review and correction pass
+11. Transparent layout asset
+12. Background removal / object isolation
+13. Layered export handoff
 
 ## 1. Generic Photo To Archaeological Drawing
 
@@ -26,7 +29,9 @@ Hard constraints:
 - Use orthographic drawing logic only. No perspective, no camera-angle distortion, no dramatic lighting.
 - Use one primary reference image for contour and projection. Use any additional reference images only to confirm local detail visible on the same face or view.
 - Preserve the observable contour, internal structure, damage, perforations, asymmetry, and visible ornament exactly.
-- Remove photographic background, museum captions, labels, glare, and cast shadows.
+- Remove photographic background, museum captions, labels, non-artifact glare, and cast shadows.
+- Treat glare on the artifact body as a high-risk local region: copy only visible structure and leave hidden detail simplified, omitted, or uncertain.
+- When removing background, labels, non-artifact glare, or shadows, do not repair, beautify, smooth, or complete damaged or missing artifact areas.
 - Treat any text outside the artifact as background noise unless explicitly requested.
 - If the artifact bears inscription, script, letters, numerals, punctuation, or symbol-like marks, treat every mark as image geometry, not language: do not translate, simplify, regularize, typeset, autocomplete, or convert it into modern text or symbols.
 - If these strokes or marks are incomplete or unclear, copy only the visible parts or omit them; do not repair them into legible characters, digits, or symbols.
@@ -222,4 +227,53 @@ Corrections:
 - If the source evidence is weaker than the current claim, demote the output tier instead of polishing the wording.
 - End with a short `Risk note`.
 - Make the result look like a scientific archaeological plate, not an art print.
+```
+
+## 11. Transparent Layout Asset
+
+Use only when the user needs a transparent-background PNG for layout, overlay, or downstream composition.
+
+```text
+Create a transparent-background PNG layout asset from the approved archaeological drawing or evidence-bounded draft.
+
+Requirements:
+- Preserve the approved contour, line hierarchy, breaks, voids, damage, ornament, labels, and uncertainty marks exactly.
+- Make only the non-artifact background transparent.
+- Do not add shadows, halos, fills, color, decorative effects, or new labels.
+- Do not repair, smooth, complete, or simplify artifact edges while cleaning the alpha boundary.
+- Keep the same output tier as the approved drawing. Do not upgrade the claim because the asset is cleaner.
+- End with a short `Risk note` stating that transparent-background cleanup did not change artifact information, or naming any edge areas that remain uncertain.
+```
+
+## 12. Background Removal / Object Isolation
+
+Use when non-artifact background material blocks layout, review, or reference-image editing.
+
+```text
+Isolate the artifact from the provided source image while preserving artifact evidence.
+
+Requirements:
+- Remove only non-artifact background, such as cloth, table surface, captions, labels, watermarks, non-artifact glare, and cast shadows.
+- Preserve every visible artifact edge, break, void, perforation, worn area, damaged boundary, inscription stroke, and ornament trace.
+- Do not use inpainting, autocomplete, or AI completion on the artifact body.
+- Treat glare on the artifact body as unresolved evidence unless the underlying structure is still clearly visible.
+- Do not infer hidden contour, missing ornament, wall thickness, backs, interiors, or unreadable script.
+- If background fill is needed outside the artifact, keep it visually neutral and do not treat it as artifact evidence.
+- End with a short `Risk note` and an `AI completion disclosure` stating whether any completion was limited to non-artifact background.
+```
+
+## 13. Layered Export Handoff
+
+Use when the user requests layered source, PSD handoff, or production-layer organization.
+
+```text
+Prepare a layered production handoff from the approved archaeological drawing.
+
+Requirements:
+- Do not claim direct PSD export unless the current toolchain can genuinely create a PSD or layered source file.
+- Build layers only from the approved source-bound drawing and reference material.
+- Use these layer names when applicable: `reference`, `contour`, `major-structure`, `ornament`, `section-hatching`, `labels`, `risk-note`.
+- Keep uncertain, simplified, omitted, or reconstructed areas clearly represented in the `risk-note` layer or accompanying note.
+- Do not introduce AI-completed artifact detail in any layer.
+- If a real layered file cannot be produced, return this as a layer plan and prompt package rather than claiming export success.
 ```

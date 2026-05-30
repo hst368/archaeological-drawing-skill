@@ -15,7 +15,8 @@ Triage assumptions:
 Requirements:
 - Treat the object as a flat openwork artifact, not as a vessel.
 - Preserve the outer frame, internal voids, motif boundaries, breakage, asymmetry, and visible relief transitions.
-- Remove museum captions, labels, glare, background, and cast shadows.
+- Remove museum captions, labels, non-artifact glare, background, and cast shadows.
+- Treat reflective highlights on the artifact body as high-risk local regions; do not inpaint or complete hidden motif edges.
 - Do not invent a back view, section, thickness, restoration, or scale bar.
 - Use black linework, restrained stipple or short hatching, and a white background.
 - End with a Risk note naming unresolved high-risk regions.

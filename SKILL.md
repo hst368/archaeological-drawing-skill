@@ -53,6 +53,21 @@ State or internally determine the output tier before prompt-writing.
   - Allowed when evidence is weak, schematic, or primarily communicative.
   - Must not be presented as a report drawing.
 
+## Image Backend Capabilities
+
+Use image-backend capabilities only to support the evidence-bounded workflow. Model features never upgrade the evidence class or output tier.
+
+- Useful capabilities:
+  - reference-image editing for source-bound redrawing and correction
+  - transparent-background PNG output for layout assets, overlay checks, and downstream composition
+  - object/background separation for removing non-artifact backgrounds, labels, cast shadows, or captions
+  - iterative revision for correcting contour drift, line hierarchy, and unsupported detail
+- Hard limits:
+  - AI completion may be used only outside the artifact body, such as non-artifact background fill after object isolation.
+  - Never use AI completion to restore missing artifact structure, occluded ornament, wall thickness, broken edges, unreadable inscriptions, or damaged symbol strokes.
+  - Do not treat a cleaner isolated object, transparent edge, or layered asset as stronger evidence than the original source.
+  - If the backend smooths, repairs, regularizes, or invents artifact detail, reject the result or demote the affected region to uncertain.
+
 ## Workflow Modes
 
 These modes sit underneath the evidence gate and output tier. They control execution only; they never upgrade the allowed output claim.
@@ -244,7 +259,10 @@ When using an image model:
 - Prefer reference-image editing over text-only generation.
 - Tell the model to `convert`, `redraw`, or `regularize into archaeological drawing`, not to `reimagine` or `stylize`.
 - Tell the model exactly which visible structures must be preserved.
-- Tell the model what it must remove from the source photo, such as background cloth, labels, museum captions, glare, or cast shadow.
+- Tell the model what it must remove from the source photo, such as background cloth, labels, museum captions, non-artifact glare, or cast shadow.
+- Treat glare on the artifact body as a high-risk local region. Copy only visible structure; do not inpaint, restore, or infer detail hidden by the glare.
+- When requesting object isolation or background removal, preserve the artifact's original edge irregularities, breaks, voids, and damage. Do not repair, beautify, or complete the artifact body.
+- Request `transparent background` only for layout assets, overlays, or layered production handoff. The default scientific drawing remains a white-background PNG unless the user explicitly asks for another format.
 - When inscriptions or symbol-like markings matter, explicitly say `treat all characters, letters, numerals, and symbols as image geometry, not as text content` and `do not translate, simplify, regularize, replace with fonts, or repair missing strokes`.
 - Explicitly say `scientific record first, artistic expression second`.
 
@@ -273,6 +291,11 @@ After the prompt is ready, choose an execution path that matches the output tier
 - Prefer image editing from the source photos over text-only generation.
 - Do not hardcode a local provider or skill. Choose the most capable available model at runtime.
 - If multiple callable models exist, prefer the one that best preserves structure, contour, and damage while allowing prompt-based correction.
+- Choose the output lane before generation:
+  - `scientific drawing`: evidence-bounded drawing for review or publication preparation; default to white background.
+  - `layout asset`: transparent-background PNG for placement, overlay, or composition; preserve the approved drawing exactly.
+  - `layered production asset`: layered source or PSD handoff created only from approved drawing layers and only when the current toolchain can genuinely produce it.
+- Do not let layout or layered-production requests change the source class, output tier, contour decisions, or local-risk decisions.
 - Default to automatic mode switching:
   - Start with `main-structure pass`.
   - Invoke `high-risk local pass` only when a named high-risk region exists.
@@ -308,6 +331,7 @@ For Codex/OpenAI environments, UI metadata may exist in `agents/openai.yaml`. Cl
 ### Draft output
 
 - Default to a single PNG on a white background unless the user explicitly asks for another format or plate style.
+- Use a transparent-background PNG only when the requested output is a `layout asset`, overlay, or layered-production handoff; keep all artifact linework and uncertain edges unchanged.
 - If the user provides multiple views of one artifact, default to one composed plate with aligned views rather than unrelated separate outputs.
 - If the user provides multiple artifacts or explicitly asks for a `plate`, compose as a grid with consistent margins, aligned baselines where appropriate, and truthful scale cues only when measurements are known.
 - If the user requests separate exports, keep the main composed plate plus individual views only when that split clearly helps publication or review.
@@ -320,12 +344,22 @@ For Codex/OpenAI environments, UI metadata may exist in `agents/openai.yaml`. Cl
 - Do not promise automatic vectorization or layered source output unless the current toolchain can genuinely produce it.
 - Keep labels, numbering, and scale bars restrained and publication-oriented. Omit numeric scale when dimensions are unknown.
 
+### Layered production output
+
+- Treat PSD or layered-source export as a production handoff, not as a separate archaeological finding.
+- Do not promise PSD export unless a verified script or toolchain can genuinely create it in the current environment.
+- Use fixed layer names when layered output is produced: `reference`, `contour`, `major-structure`, `ornament`, `section-hatching`, `labels`, and `risk-note`.
+- Every layer must derive from the approved source-bound drawing or source reference. No layer may contain AI-completed artifact structure or repaired local detail.
+- If the toolchain cannot produce layered output, return a layer plan and prompt package rather than claiming that a PSD was generated.
+
 ### Risk note
 
 - Every output must end with a short `Risk note`.
 - For strong evidence, keep the note brief and state the residual limits.
 - For weaker evidence, name the uncertain areas explicitly, such as worn ornament, low-contrast relief, reflective glare, dense motif topology, damaged edges, or ambiguous scripts/symbols.
 - If `high-risk local pass` was used, say whether each named local area was resolved, simplified, omitted, or left uncertain.
+- If object isolation, background removal, transparent-edge cleanup, or AI completion outside the artifact was used, disclose whether it affected artifact information.
+- Never describe AI-completed artifact structure as resolved evidence; unsupported artifact areas must remain simplified, omitted, or left uncertain.
 
 ## LoRA Readiness
 

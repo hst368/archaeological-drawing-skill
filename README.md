@@ -13,6 +13,7 @@ This skill is built for archaeological drawing logic rather than generic "line a
   - `high-risk local pass`
   - `review-and-merge pass`
 - Supports `Preprocessing / Region Triage` before generation
+- Supports transparent-background layout assets, object/background separation, and layered production handoff when the current backend or toolchain can genuinely provide them
 - Provides prompt templates, drawing standards, and acceptance checks for archaeological-style output
 - Forces a closing `Risk note` so uncertain areas are disclosed rather than hidden
 
@@ -45,15 +46,23 @@ The current version is best understood as an evidence-constrained workflow skill
   - narrowing view choice to what the evidence supports
   - separating global structure from high-risk local detail
   - making uncertainty explicit
+- Supported backend-assisted production tasks:
+  - reference-image editing and iterative correction
+  - transparent-background PNG output for layout, overlay, and composition
+  - object/background separation for non-artifact background removal
+  - layered production handoff when a verified external toolchain can produce the file
 - Current ceiling:
   - usually `Tier 2: evidence-bounded AI technical draft`
   - sometimes `Tier 1.5: report-grade candidate` when evidence is genuinely strong
 - Current limitation:
   - complex objects still need human checking, cleanup, and sometimes manual redrawing
+  - transparent or layered assets do not strengthen the evidence class
+  - AI completion must not be used to restore missing artifact structure, occluded ornament, broken edges, wall thickness, or unreadable inscriptions
 
 ## Current Backend Reality
 
 - This repository does not include a trainable image-generation backend.
+- This repository does not include a PSD generator. PSD or layered-source output is a production handoff unless a verified external script or toolchain is available.
 - If your available image backend is only a hosted general model, this skill should be used as workflow control and review discipline, not as a built-in LoRA training system.
 - `LoRA Readiness` is included as future-facing guidance for paired-data preparation, not as a promise that this repository can train or run LoRA by itself.
 
@@ -125,7 +134,7 @@ The default practical target for most photo-based work is `Tier 2`.
 
 ## Version
 
-Current version: `1.0.0`
+Current version: `1.1.0`
 
 Version history is recorded in [CHANGELOG.md](./CHANGELOG.md).
 
@@ -164,6 +173,7 @@ Use $archaeological-drawing to convert this artifact photo into an evidence-boun
 ## Notes
 
 - The skill prefers the strongest available image-generation model that supports reference-image editing and iterative correction.
+- Transparent-background output is for layout and production handoff; the default scientific draft remains a white-background PNG unless another format is requested.
 - If no image-generation model is callable, the skill should still return a prompt package, evidence-bounded view plan, and review checklist.
 - The skill is designed to reduce hallucination and overclaiming, not to guarantee zero-error output.
 
